@@ -4,6 +4,11 @@ A TUI toolkit that gives Claude Code its own display. Spawn interactive terminal
 
 ![Claude Canvas Screenshot](media/screenshot.png)
 
+## Requirements
+
+- [Bun](https://bun.sh) — used to run skill tools
+- [tmux](https://github.com/tmux/tmux) — canvases spawn in split panes
+
 ## Installation
 
 Add this repository as a marketplace in Claude Code:
