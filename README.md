@@ -16,7 +16,7 @@ A TUI toolkit that gives Claude Code its own display. Spawn interactive terminal
 Add this repository as a marketplace in Claude Code:
 
 ```
-/plugin marketplace add dvdsgl/claude-canvas
+/plugin marketplace add eladcandroid/claude-canvas
 ```
 
 Then install the canvas plugin:
