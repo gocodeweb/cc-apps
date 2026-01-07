@@ -9,16 +9,30 @@ description: |
 
 Display Jewish halachic times (zmanim) for any date and location.
 
-## Usage
+## IMPORTANT: Spawn Immediately
 
-1. First, fetch zmanim data from the Hebcal API for the requested location and date
-2. Then spawn the canvas with the fetched data
+When the user asks to "show zmanim" or similar:
+
+1. **If a location is provided** (in ARGUMENTS or user message): Fetch zmanim from Hebcal API for that location, then spawn
+2. **If no location**: Default to Jerusalem
+
+### Quick spawn for Jerusalem (default):
+```bash
+bun run src/cli.ts spawn zmanim --config '{
+  "date": "TODAY_DATE",
+  "location": {"name": "Jerusalem", "latitude": 31.77, "longitude": 35.22, "timezone": "Asia/Jerusalem"},
+  "times": [FETCH_FROM_HEBCAL]
+}'
+```
+
+### Hebcal API (use latitude/longitude for any location):
+```
+https://www.hebcal.com/zmanim?cfg=json&latitude=LAT&longitude=LON&tzid=TIMEZONE&date=YYYY-MM-DD
+```
+
+## Standard Spawn Example
 
 ```bash
-# Step 1: Fetch data from Hebcal API
-# https://www.hebcal.com/zmanim?cfg=json&geonameid=281184&date=2026-01-07
-
-# Step 2: Spawn the canvas (runs in new terminal window)
 bun run src/cli.ts spawn zmanim --config '{
   "date": "2026-01-07",
   "hebrewDate": "ז׳ טבת תשפ״ו",
