@@ -5,6 +5,8 @@ import { Document } from "./document";
 import type { DocumentConfig } from "./document/types";
 import { FlightCanvas } from "./flight";
 import type { FlightConfig } from "./flight/types";
+import { Zmanim } from "./zmanim";
+import type { ZmanimConfig } from "./zmanim/types";
 
 // Clear screen and hide cursor
 function clearScreen() {
@@ -54,6 +56,12 @@ export async function renderCanvas(
       return renderFlight(
         id,
         config as FlightConfig | undefined,
+        options
+      );
+    case "zmanim":
+      return renderZmanim(
+        id,
+        config as ZmanimConfig | undefined,
         options
       );
     default:
@@ -111,6 +119,25 @@ async function renderFlight(
       config={config}
       socketPath={options?.socketPath}
       scenario={options?.scenario || "booking"}
+    />,
+    {
+      exitOnCtrlC: true,
+    }
+  );
+  await waitUntilExit();
+}
+
+async function renderZmanim(
+  id: string,
+  config?: ZmanimConfig,
+  options?: RenderOptions
+): Promise<void> {
+  const { waitUntilExit } = render(
+    <Zmanim
+      id={id}
+      config={config}
+      socketPath={options?.socketPath}
+      scenario={options?.scenario || "display"}
     />,
     {
       exitOnCtrlC: true,
