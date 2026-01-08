@@ -1,29 +1,111 @@
-# Claude Canvas
+```
+ ██████╗ ██████╗        █████╗ ██████╗ ██████╗ ███████╗
+██╔════╝██╔════╝       ██╔══██╗██╔══██╗██╔══██╗██╔════╝
+██║     ██║     █████╗ ███████║██████╔╝██████╔╝███████╗
+██║     ██║     ╚════╝ ██╔══██║██╔═══╝ ██╔═══╝ ╚════██║
+╚██████╗╚██████╗       ██║  ██║██║     ██║     ███████║
+ ╚═════╝ ╚═════╝       ╚═╝  ╚═╝╚═╝     ╚═╝     ╚══════╝
+```
 
-A TUI toolkit that gives Claude Code its own display. Spawn interactive terminal interfaces for emails, calendars, flight bookings, and more.
+Interactive terminal TUI components for Claude Code - calendars, documents, tables, JSON explorer, and more.
 
-**Note:** This is a proof of concept and is unsupported.
+## Overview
+
+A TUI toolkit that gives Claude Code its own display. Spawn interactive terminal interfaces in tmux split panes and receive user selections back into the conversation.
 
 ![Claude Canvas Screenshot](media/screenshot.png)
 
+## Canvas Types
+
+| Type | Scenarios | Description |
+|------|-----------|-------------|
+| `calendar` | `display`, `meeting-picker` | Display events, pick meeting times |
+| `document` | `display`, `edit`, `email-preview` | View/edit markdown documents |
+| `flight` | `booking` | Compare flights and select seats |
+| `zmanim` | `display` | Jewish halachic times |
+| `table` | `display`, `select`, `multi-select` | Tabular data with row selection |
+| `json` | `explore`, `select` | JSON tree explorer with expand/collapse |
+
 ## Requirements
 
-- [Bun](https://bun.sh) — used to run skill tools
-- [tmux](https://github.com/tmux/tmux) — canvases spawn in split panes
+### tmux
+Canvas spawning requires a tmux session:
+
+```bash
+# macOS
+brew install tmux
+
+# Ubuntu/Debian
+sudo apt install tmux
+```
+
+### Bun
+Runtime for CLI commands:
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+### Claude Code
+The Anthropic CLI for Claude:
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
 
 ## Installation
 
 Add this repository as a marketplace in Claude Code:
 
 ```
-/plugin marketplace add eladcandroid/claude-canvas
+/plugin marketplace add eladcandroid/cc-apps
 ```
 
 Then install the canvas plugin:
 
 ```
-/plugin install canvas@claude-canvas
+/plugin install canvas@cc-apps
 ```
+
+## Usage
+
+### 1. Start tmux session
+
+```bash
+tmux new -s claude
+```
+
+### 2. Launch Claude Code
+
+```bash
+claude
+```
+
+### 3. Try these example prompts
+
+**Calendar:**
+```
+Show me a calendar for January 2025
+```
+
+**Table with selection:**
+```
+Show me a table with some sample users and let me pick one
+```
+
+**JSON Explorer:**
+```
+Let me explore this JSON: {"users": [{"name": "John", "age": 30}, {"name": "Jane", "age": 25}]}
+```
+
+**Document editing:**
+```
+Open a document editor with a markdown template
+```
+
+## Credits
+
+This project is inspired by and builds upon [dvdsgl/claude-canvas](https://github.com/dvdsgl/claude-canvas) - the original Claude Canvas implementation by David Siegel.
 
 ## License
 
