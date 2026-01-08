@@ -2,7 +2,7 @@
 name: canvas
 description: |
   **The primary skill for terminal TUI components.** Covers spawning, controlling, and interacting with terminal canvases.
-  Use when displaying calendars, documents, or flight bookings.
+  Use when displaying calendars, documents, tables, JSON, browser, or flight bookings.
 ---
 
 # Canvas TUI Toolkit
@@ -23,6 +23,7 @@ Canvas provides interactive terminal displays (TUIs) that Claude can spawn and c
 | `zmanim` | Display Jewish halachic times | `display` |
 | `table` | Display and select from tabular data | `display`, `select`, `multi-select` |
 | `json` | JSON/YAML tree explorer | `explore`, `select` |
+| `browser` | Terminal web browser (browsh) | `display` |
 
 ## Quick Start
 
@@ -34,6 +35,9 @@ bun run src/cli.ts show calendar
 
 # Spawn canvas in new tmux split
 bun run src/cli.ts spawn calendar --scenario meeting-picker --config '{...}'
+
+# Spawn browser to URL
+bun run src/cli.ts browser --url "http://localhost:3000"
 ```
 
 ## Spawning Canvases
@@ -45,10 +49,16 @@ bun run src/cli.ts spawn [kind] --scenario [name] --config '[json]'
 ```
 
 **Parameters:**
-- `kind`: Canvas type (calendar, document, flight)
+- `kind`: Canvas type (calendar, document, flight, table, json, browser)
 - `--scenario`: Interaction mode (e.g., display, meeting-picker, edit)
 - `--config`: JSON configuration for the canvas
 - `--id`: Optional canvas instance ID for IPC
+
+**Browser-specific:**
+```bash
+bun run src/cli.ts browser --url "http://localhost:3000"
+bun run src/cli.ts browser --url "http://localhost:3000" --gui  # With Firefox DevTools
+```
 
 ## IPC Communication
 
@@ -93,6 +103,33 @@ if (result.success && result.data) {
 - **Terminal with mouse support**: For click-based interactions
 - **Bun**: Runtime for executing canvas commands
 
+## tmux Configuration
+
+Add these settings to `~/.tmux.conf` for the best canvas experience:
+
+```bash
+# Enable mouse support (resize panes, scroll, click)
+set -g mouse on
+
+# Copy to system clipboard on macOS
+bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
+bind-key -T copy-mode MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
+
+# True color support (better graphics in browsh)
+set -g default-terminal "tmux-256color"
+set -ag terminal-overrides ",xterm-256color:RGB"
+```
+
+After editing, reload with: `tmux source-file ~/.tmux.conf`
+
+### Resizing Canvas Panes
+
+| Method | How |
+|--------|-----|
+| **Mouse** | Drag the border between panes |
+| **Keys** | `Ctrl+B` then `Ctrl+←` or `Ctrl+→` |
+| **Precise** | `Ctrl+B` then `:resize-pane -L 10` or `-R 10` |
+
 ## Skills Reference
 
 | Skill | Purpose |
@@ -103,3 +140,4 @@ if (result.success && result.data) {
 | `zmanim` | Jewish halachic times display |
 | `table` | Tabular data display and selection |
 | `json` | JSON tree explorer with expand/collapse |
+| `browser` | Terminal web browser with full JS support |

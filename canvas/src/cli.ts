@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 import { program } from "commander";
-import { detectTerminal, spawnCanvas } from "./terminal";
+import { detectTerminal, spawnCanvas, spawnBrowser } from "./terminal";
 
 // Set window title via ANSI escape codes
 function setWindowTitle(title: string) {
@@ -47,6 +47,29 @@ program
       scenario: options.scenario,
     });
     console.log(`Spawned ${kind} canvas '${id}' via ${result.method}`);
+  });
+
+program
+  .command("browser")
+  .description("Spawn a terminal browser (browsh) in a tmux pane")
+  .option("--url <url>", "URL to open", "http://localhost:3000")
+  .option("--config <json>", "Configuration (JSON with url field)")
+  .option("--gui", "Show Firefox GUI window (for DevTools access)")
+  .action(async (options) => {
+    let url = options.url;
+
+    // Config takes precedence if provided
+    if (options.config) {
+      const config = JSON.parse(options.config);
+      url = config.url || url;
+    }
+
+    const result = await spawnBrowser(url, { withGui: options.gui });
+    console.log(`Spawned browser to ${url} via ${result.method}${options.gui ? " (with Firefox GUI)" : ""}`);
+    console.log(`\nShortcuts: Ctrl+L=URL  Back=Backspace  Fwd=Alt+→  Refresh=Ctrl+R  Quit=Ctrl+Q  Help=F1`);
+    if (options.gui) {
+      console.log(`\nFirefox window opened - press F12 for DevTools`);
+    }
   });
 
 program

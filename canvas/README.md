@@ -1,25 +1,26 @@
-# CC Apps (Canvas Plugin)
+# 🎨 CC Apps (Canvas Plugin)
 
-Interactive terminal TUI components for Claude Code - calendars, documents, tables, JSON explorer, and more.
+> Interactive terminal TUI components for Claude Code - calendars, documents, tables, JSON explorer, browser, and more!
 
-## Overview
+## ✨ Overview
 
 Canvas provides spawnable terminal displays with real-time IPC communication. Claude can spawn these TUIs in tmux split panes and receive user selections back into the conversation.
 
-## Canvas Types
+## 🧩 Canvas Types
 
 | Type | Scenarios | Description |
 |------|-----------|-------------|
-| `calendar` | `display`, `meeting-picker` | Display events, pick meeting times |
-| `document` | `display`, `edit`, `email-preview` | View/edit markdown documents |
-| `flight` | `booking` | Compare flights and select seats |
-| `zmanim` | `display` | Jewish halachic times |
-| `table` | `display`, `select`, `multi-select` | Tabular data with row selection |
-| `json` | `explore`, `select` | JSON tree explorer with expand/collapse |
+| 📅 `calendar` | `display`, `meeting-picker` | Display events, pick meeting times |
+| 📄 `document` | `display`, `edit`, `email-preview` | View/edit markdown documents |
+| ✈️ `flight` | `booking` | Compare flights and select seats |
+| 🕐 `zmanim` | `display` | Jewish halachic times |
+| 📊 `table` | `display`, `select`, `multi-select` | Tabular data with row selection |
+| 🔍 `json` | `explore`, `select` | JSON tree explorer with expand/collapse |
+| 🌐 `browser` | `display` | Terminal web browser (browsh) |
 
-## Requirements
+## 📋 Requirements
 
-### tmux
+### 🖥️ tmux
 Canvas spawning requires a tmux session. Install tmux:
 
 ```bash
@@ -33,24 +34,24 @@ sudo apt install tmux
 sudo pacman -S tmux
 ```
 
-### Bun
+### 🥟 Bun
 Runtime for CLI commands. Install Bun:
 
 ```bash
 curl -fsSL https://bun.sh/install | bash
 ```
 
-### Claude Code
+### 🤖 Claude Code
 The Anthropic CLI for Claude. Install Claude Code:
 
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
 
-### Terminal with mouse support
+### 🖱️ Terminal with mouse support
 For interactive scenarios (clicking, selecting). Most modern terminals support this (iTerm2, Alacritty, kitty, Windows Terminal).
 
-## Installation
+## 🚀 Installation
 
 ```bash
 # Clone the repo
@@ -61,48 +62,53 @@ cd cc-apps/canvas
 bun install
 ```
 
-## Usage
+## 💡 Usage
 
-### 1. Start tmux session
+### 1️⃣ Start tmux session
 
 ```bash
 tmux new -s claude
 ```
 
-### 2. Launch Claude Code
+### 2️⃣ Launch Claude Code
 
 ```bash
 claude
 ```
 
-### 3. Try these example prompts
+### 3️⃣ Try these example prompts
 
-**Calendar:**
+📅 **Calendar:**
 ```
 Show me a calendar for January 2025
 ```
 
-**Table with selection:**
+📊 **Table with selection:**
 ```
 Show me a table with some sample users and let me pick one
 ```
 
-**JSON Explorer:**
+🔍 **JSON Explorer:**
 ```
 Let me explore this JSON: {"users": [{"name": "John", "age": 30}, {"name": "Jane", "age": 25}]}
 ```
 
-**Document editing:**
+📄 **Document editing:**
 ```
 Open a document editor with a markdown template
 ```
 
-**Meeting picker:**
+🗓️ **Meeting picker:**
 ```
 Help me pick a meeting time, show available slots for this week
 ```
 
-### Direct CLI usage
+🌐 **Browser:**
+```
+Open a browser to localhost:3000
+```
+
+### ⌨️ Direct CLI usage
 
 ```bash
 # Show calendar in current terminal
@@ -113,24 +119,31 @@ bun run src/cli.ts spawn table --scenario select --config '{"title": "Pick a use
 
 # Spawn JSON explorer
 bun run src/cli.ts spawn json --config '{"title": "API Response", "data": {"status": "ok", "items": [1, 2, 3]}}'
+
+# Spawn browser to URL
+bun run src/cli.ts browser --url "http://localhost:3000"
+
+# Spawn browser with Firefox GUI (for DevTools)
+bun run src/cli.ts browser --url "http://localhost:3000" --gui
 ```
 
-## Skills
+## 📚 Skills
 
 | Skill | Description |
 |-------|-------------|
-| `canvas` | Main skill with overview and IPC details |
-| `calendar` | Calendar display and meeting picker |
-| `document` | Markdown rendering and text selection |
-| `flight` | Flight comparison and seatmaps |
-| `zmanim` | Jewish halachic times display |
-| `table` | Tabular data display and selection |
-| `json` | JSON tree explorer with expand/collapse |
+| 🎨 `canvas` | Main skill with overview and IPC details |
+| 📅 `calendar` | Calendar display and meeting picker |
+| 📄 `document` | Markdown rendering and text selection |
+| ✈️ `flight` | Flight comparison and seatmaps |
+| 🕐 `zmanim` | Jewish halachic times display |
+| 📊 `table` | Tabular data display and selection |
+| 🔍 `json` | JSON tree explorer with expand/collapse |
+| 🌐 `browser` | Terminal web browser (browsh) |
 
-## Credits
+## 🙏 Credits
 
 This project is inspired by and builds upon [dvdsgl/claude-canvas](https://github.com/dvdsgl/claude-canvas) - the original Claude Canvas implementation by David Siegel.
 
-## License
+## 📄 License
 
 MIT

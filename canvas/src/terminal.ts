@@ -90,9 +90,9 @@ async function saveCanvasPaneId(paneId: string): Promise<void> {
 async function createNewPane(command: string): Promise<boolean> {
   return new Promise((resolve) => {
     // Use split-window -h for vertical split (side by side)
-    // -p 67 gives canvas 2/3 width (1:2 ratio, Claude:Canvas)
+    // -p 50 gives canvas half width (1:1 ratio, Claude:Canvas)
     // -P -F prints the new pane ID so we can save it
-    const args = ["split-window", "-h", "-p", "67", "-P", "-F", "#{pane_id}", command];
+    const args = ["split-window", "-h", "-p", "50", "-P", "-F", "#{pane_id}", command];
     const proc = spawn("tmux", args);
     let paneId = "";
     proc.stdout?.on("data", (data) => {
@@ -142,5 +142,41 @@ async function spawnTmux(command: string): Promise<boolean> {
 
   // Create a new split pane
   return createNewPane(command);
+}
+
+export async function spawnBrowser(url: string, options?: { withGui?: boolean }): Promise<SpawnResult> {
+  const env = detectTerminal();
+
+  if (!env.inTmux) {
+    throw new Error("Browser requires tmux. Please run inside a tmux session.");
+  }
+
+  // Kill any existing browsh process first (it doesn't respond to Ctrl+C)
+  spawnSync("pkill", ["-f", "browsh"]);
+
+  // Small delay to let the process terminate
+  await new Promise((resolve) => setTimeout(resolve, 200));
+
+  // Spawn browsh with the given URL
+  const guiFlag = options?.withGui ? " --firefox.with-gui" : "";
+  const command = `browsh${guiFlag} --startup-url "${url}"`;
+  const result = await spawnTmux(command);
+
+  if (result) {
+    // Set pane title with shortcuts
+    const paneId = await getCanvasPaneId();
+    if (paneId) {
+      spawnSync("tmux", [
+        "select-pane", "-t", paneId,
+        "-T", "^L URL | Bksp Back | Alt+→ Fwd | ^R Reload | ^Q Quit"
+      ]);
+      // Enable pane border status to show the title
+      spawnSync("tmux", ["set-option", "-p", "-t", paneId, "pane-border-status", "bottom"]);
+      spawnSync("tmux", ["set-option", "-p", "-t", paneId, "pane-border-format", " #{pane_title} "]);
+    }
+    return { method: "tmux" };
+  }
+
+  throw new Error("Failed to spawn browser pane");
 }
 
