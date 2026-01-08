@@ -13,6 +13,8 @@ import { Json } from "./json";
 import type { JsonConfig } from "./json/types";
 import { Weather } from "./weather";
 import type { WeatherConfig } from "./weather/types";
+import { Chart } from "./chart";
+import type { ChartConfig } from "./chart/types";
 
 // Clear screen and hide cursor
 function clearScreen() {
@@ -86,6 +88,12 @@ export async function renderCanvas(
       return renderWeather(
         id,
         config as WeatherConfig | undefined,
+        options
+      );
+    case "chart":
+      return renderChart(
+        id,
+        config as ChartConfig | undefined,
         options
       );
     default:
@@ -215,6 +223,25 @@ async function renderWeather(
 ): Promise<void> {
   const { waitUntilExit } = render(
     <Weather
+      id={id}
+      config={config}
+      socketPath={options?.socketPath}
+      scenario={options?.scenario || "display"}
+    />,
+    {
+      exitOnCtrlC: true,
+    }
+  );
+  await waitUntilExit();
+}
+
+async function renderChart(
+  id: string,
+  config?: ChartConfig,
+  options?: RenderOptions
+): Promise<void> {
+  const { waitUntilExit } = render(
+    <Chart
       id={id}
       config={config}
       socketPath={options?.socketPath}

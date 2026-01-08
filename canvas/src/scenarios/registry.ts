@@ -13,6 +13,8 @@ import { tableMultiSelectScenario } from "./table/multi-select";
 import { jsonExploreScenario } from "./json/explore";
 import { jsonSelectScenario } from "./json/select";
 import { weatherDisplayScenario } from "./weather/display";
+import { chartDisplayScenario } from "./chart/display";
+import { chartSelectScenario } from "./chart/select";
 
 // Registry of all scenarios keyed by "canvasKind:scenarioName"
 const registry = new Map<string, ScenarioDefinition>();
@@ -40,6 +42,10 @@ registry.set("json:select", jsonSelectScenario);
 
 // Register weather scenarios
 registry.set("weather:display", weatherDisplayScenario);
+
+// Register chart scenarios
+registry.set("chart:display", chartDisplayScenario);
+registry.set("chart:select", chartSelectScenario);
 
 export function getScenario(
   canvasKind: string,
