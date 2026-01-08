@@ -1,10 +1,10 @@
 // High-Level Canvas API for Claude
 // Provides simple async interface for spawning interactive canvases
 
-import { createIPCServer } from "../ipc/server";
+import { connectWithRetry, type IPCClient } from "../ipc/client";
 import { getSocketPath } from "../ipc/types";
 import { spawnCanvas } from "../terminal";
-import type { CanvasMessage } from "../ipc/types";
+import type { CanvasMessage, ControllerMessage } from "../ipc/types";
 import type {
   MeetingPickerConfig,
   MeetingPickerResult,
@@ -37,90 +37,38 @@ export async function spawnCanvasWithIPC<TConfig, TResult>(
   const id = `${kind}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const socketPath = getSocketPath(id);
 
-  return new Promise((resolve) => {
-    let resolved = false;
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  let resolved = false;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  let client: IPCClient | null = null;
 
-    const cleanup = () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-        timeoutId = null;
-      }
-      server.close();
-    };
+  const cleanup = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+    client?.close();
+  };
 
-    const server = createIPCServer({
-      socketPath,
-      onConnect() {
-        // Canvas connected, waiting for ready message
-      },
-      onMessage(msg: CanvasMessage) {
-        if (resolved) return;
-
-        switch (msg.type) {
-          case "ready":
-            onReady?.();
-            break;
-
-          case "selected":
-            resolved = true;
-            cleanup();
-            resolve({
-              success: true,
-              data: msg.data as TResult,
-            });
-            break;
-
-          case "cancelled":
-            resolved = true;
-            cleanup();
-            resolve({
-              success: true,
-              cancelled: true,
-            });
-            break;
-
-          case "error":
-            resolved = true;
-            cleanup();
-            resolve({
-              success: false,
-              error: msg.message,
-            });
-            break;
-
-          case "pong":
-            // Response to ping, ignore
-            break;
-        }
-      },
-      onDisconnect() {
-        if (!resolved) {
-          resolved = true;
-          cleanup();
-          resolve({
-            success: false,
-            error: "Canvas disconnected unexpectedly",
-          });
-        }
-      },
-      onError(error) {
-        if (!resolved) {
-          resolved = true;
-          cleanup();
-          resolve({
-            success: false,
-            error: error.message,
-          });
-        }
-      },
-    });
+  return new Promise(async (resolve) => {
+    // Spawn the canvas first (it creates the IPC server)
+    try {
+      await spawnCanvas(kind, id, JSON.stringify(config), {
+        socketPath,
+        scenario,
+      });
+    } catch (err: any) {
+      resolve({
+        success: false,
+        error: `Failed to spawn canvas: ${err.message}`,
+      });
+      return;
+    }
 
     // Set timeout
     timeoutId = setTimeout(() => {
       if (!resolved) {
         resolved = true;
-        server.send({ type: "close" });
+        client?.send({ type: "close" } as any);
         cleanup();
         resolve({
           success: false,
@@ -129,20 +77,79 @@ export async function spawnCanvasWithIPC<TConfig, TResult>(
       }
     }, timeout);
 
-    // Spawn the canvas
-    spawnCanvas(kind, id, JSON.stringify(config), {
-      socketPath,
-      scenario,
-    }).catch((err) => {
+    // Connect to the canvas server (with retries to allow canvas to start)
+    try {
+      client = await connectWithRetry({
+        socketPath,
+        onMessage(msg: ControllerMessage) {
+          // This receives CanvasMessage actually (naming is confusing)
+          const canvasMsg = msg as unknown as CanvasMessage;
+          if (resolved) return;
+
+          switch (canvasMsg.type) {
+            case "ready":
+              onReady?.();
+              break;
+
+            case "selected":
+              resolved = true;
+              cleanup();
+              resolve({
+                success: true,
+                data: canvasMsg.data as TResult,
+              });
+              break;
+
+            case "cancelled":
+              resolved = true;
+              cleanup();
+              resolve({
+                success: true,
+                cancelled: true,
+              });
+              break;
+
+            case "error":
+              resolved = true;
+              cleanup();
+              resolve({
+                success: false,
+                error: canvasMsg.message,
+              });
+              break;
+          }
+        },
+        onDisconnect() {
+          if (!resolved) {
+            resolved = true;
+            cleanup();
+            resolve({
+              success: false,
+              error: "Canvas disconnected unexpectedly",
+            });
+          }
+        },
+        onError(error) {
+          if (!resolved) {
+            resolved = true;
+            cleanup();
+            resolve({
+              success: false,
+              error: error.message,
+            });
+          }
+        },
+      }, 30, 200); // 30 retries, 200ms apart = 6 seconds max wait for canvas to start
+    } catch (err: any) {
       if (!resolved) {
         resolved = true;
         cleanup();
         resolve({
           success: false,
-          error: `Failed to spawn canvas: ${err.message}`,
+          error: `Failed to connect to canvas: ${err.message}`,
         });
       }
-    });
+    }
   });
 }
 

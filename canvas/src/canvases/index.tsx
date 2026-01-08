@@ -7,6 +7,10 @@ import { FlightCanvas } from "./flight";
 import type { FlightConfig } from "./flight/types";
 import { Zmanim } from "./zmanim";
 import type { ZmanimConfig } from "./zmanim/types";
+import { Table } from "./table";
+import type { TableConfig } from "./table/types";
+import { Json } from "./json";
+import type { JsonConfig } from "./json/types";
 
 // Clear screen and hide cursor
 function clearScreen() {
@@ -62,6 +66,18 @@ export async function renderCanvas(
       return renderZmanim(
         id,
         config as ZmanimConfig | undefined,
+        options
+      );
+    case "table":
+      return renderTable(
+        id,
+        config as TableConfig | undefined,
+        options
+      );
+    case "json":
+      return renderJson(
+        id,
+        config as JsonConfig | undefined,
         options
       );
     default:
@@ -138,6 +154,44 @@ async function renderZmanim(
       config={config}
       socketPath={options?.socketPath}
       scenario={options?.scenario || "display"}
+    />,
+    {
+      exitOnCtrlC: true,
+    }
+  );
+  await waitUntilExit();
+}
+
+async function renderTable(
+  id: string,
+  config?: TableConfig,
+  options?: RenderOptions
+): Promise<void> {
+  const { waitUntilExit } = render(
+    <Table
+      id={id}
+      config={config}
+      socketPath={options?.socketPath}
+      scenario={options?.scenario || "display"}
+    />,
+    {
+      exitOnCtrlC: true,
+    }
+  );
+  await waitUntilExit();
+}
+
+async function renderJson(
+  id: string,
+  config?: JsonConfig,
+  options?: RenderOptions
+): Promise<void> {
+  const { waitUntilExit } = render(
+    <Json
+      id={id}
+      config={config}
+      socketPath={options?.socketPath}
+      scenario={options?.scenario || "explore"}
     />,
     {
       exitOnCtrlC: true,

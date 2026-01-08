@@ -21,6 +21,8 @@ Canvas provides interactive terminal displays (TUIs) that Claude can spawn and c
 | `document` | View/edit markdown documents | `display`, `edit`, `email-preview` |
 | `flight` | Flight comparison and seat selection | `booking` |
 | `zmanim` | Display Jewish halachic times | `display` |
+| `table` | Display and select from tabular data | `display`, `select`, `multi-select` |
+| `json` | JSON/YAML tree explorer | `explore`, `select` |
 
 ## Quick Start
 
@@ -99,3 +101,5 @@ if (result.success && result.data) {
 | `document` | Document rendering and text selection |
 | `flight` | Flight comparison and seat map details |
 | `zmanim` | Jewish halachic times display |
+| `table` | Tabular data display and selection |
+| `json` | JSON tree explorer with expand/collapse |

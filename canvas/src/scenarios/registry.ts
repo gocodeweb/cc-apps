@@ -7,6 +7,11 @@ import { documentDisplayScenario } from "./document/display";
 import { documentEditScenario } from "./document/edit";
 import { emailPreviewScenario } from "./document/email-preview";
 import { zmanimDisplayScenario } from "./zmanim/display";
+import { tableDisplayScenario } from "./table/display";
+import { tableSelectScenario } from "./table/select";
+import { tableMultiSelectScenario } from "./table/multi-select";
+import { jsonExploreScenario } from "./json/explore";
+import { jsonSelectScenario } from "./json/select";
 
 // Registry of all scenarios keyed by "canvasKind:scenarioName"
 const registry = new Map<string, ScenarioDefinition>();
@@ -22,6 +27,15 @@ registry.set("document:email-preview", emailPreviewScenario);
 
 // Register zmanim scenarios
 registry.set("zmanim:display", zmanimDisplayScenario);
+
+// Register table scenarios
+registry.set("table:display", tableDisplayScenario);
+registry.set("table:select", tableSelectScenario);
+registry.set("table:multi-select", tableMultiSelectScenario);
+
+// Register json scenarios
+registry.set("json:explore", jsonExploreScenario);
+registry.set("json:select", jsonSelectScenario);
 
 export function getScenario(
   canvasKind: string,

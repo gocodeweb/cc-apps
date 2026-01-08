@@ -6,6 +6,17 @@ Use Bun for all development:
 - `bun test` - Run tests
 - `bun install` - Install dependencies
 
+## Available Canvases
+
+| Canvas | Scenarios | Purpose |
+|--------|-----------|---------|
+| `calendar` | `display`, `meeting-picker` | Calendar views, time slot selection |
+| `document` | `display`, `edit`, `email-preview` | Markdown viewer/editor |
+| `flight` | `booking` | Flight search with seat selection |
+| `zmanim` | `display` | Jewish halachic times |
+| `table` | `display`, `select`, `multi-select` | Tabular data viewer |
+| `json` | `explore`, `select` | JSON tree explorer |
+
 ## Structure
 
 ```
@@ -27,6 +38,29 @@ canvas/
 2. Register scenarios in `src/scenarios/`
 3. Add skill in `skills/[name]/SKILL.md`
 4. Update main canvas skill
+
+## Spawning with Selection Return
+
+Use `spawnCanvasWithIPC` to spawn a canvas and get the user's selection back:
+
+```typescript
+import { spawnCanvasWithIPC } from "./src/api/canvas-api";
+
+// Table selection
+const result = await spawnCanvasWithIPC("table", "select", {
+  title: "Pick an item",
+  columns: [{key: "name", label: "Name"}],
+  rows: [{name: "Option A"}, {name: "Option B"}]
+});
+// result.data.selectedRows[0].data
+
+// JSON selection
+const result = await spawnCanvasWithIPC("json", "explore", {
+  title: "Select a value",
+  data: { user: { name: "John", email: "john@example.com" } }
+});
+// result.data.path, result.data.value
+```
 
 ## IPC Protocol
 
