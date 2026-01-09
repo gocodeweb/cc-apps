@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Claude Canvas is a TUI toolkit that gives Claude Code its own display via tmux split panes. It spawns interactive terminal interfaces (React/Ink components) for calendars, documents, flight bookings, and more.
+CC Apps is a TUI toolkit that gives Claude Code its own display via tmux split panes. It spawns interactive terminal interfaces (React/Ink components) for calendars, documents, charts, tables, JSON explorer, and more.
 
 **Requirements:** Bun, tmux
 
@@ -29,7 +29,7 @@ cd canvas && bun run src/cli.ts show document --scenario edit
 The system has three layers:
 
 1. **CLI** (`canvas/src/cli.ts`) - Entry point, parses commands, delegates to canvases
-2. **Canvases** (`canvas/src/canvases/`) - React/Ink TUI components (calendar, document, flight, zmanim)
+2. **Canvases** (`canvas/src/canvases/`) - React/Ink TUI components (calendar, document, flight, zmanim, table, json, weather, chart, browser)
 3. **IPC** (`canvas/src/ipc/`) - Unix socket communication between Claude and spawned canvases
 
 ### Canvas Types and Scenarios
@@ -42,6 +42,11 @@ Each canvas type supports multiple scenarios (interaction modes):
 | document | `display`, `edit`, `email-preview` |
 | flight | `booking` |
 | zmanim | `display` |
+| table | `display`, `select`, `multi-select` |
+| json | `explore`, `select` |
+| weather | `display` |
+| chart | `display`, `select` |
+| browser | `display` |
 
 ### Key Flows
 
