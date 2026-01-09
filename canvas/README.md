@@ -16,6 +16,7 @@ Canvas provides spawnable terminal displays with real-time IPC communication. Cl
 | 🕐 `zmanim` | `display` | Jewish halachic times |
 | 📊 `table` | `display`, `select`, `multi-select` | Tabular data with row selection |
 | 🔍 `json` | `explore`, `select` | JSON tree explorer with expand/collapse |
+| 📈 `chart` | `display`, `select` | Bar, line, and pie charts |
 | 🌐 `browser` | `display` | Terminal web browser (browsh) |
 
 ## 📋 Requirements
@@ -52,6 +53,22 @@ npm install -g @anthropic-ai/claude-code
 For interactive scenarios (clicking, selecting). Most modern terminals support this (iTerm2, Alacritty, kitty, Windows Terminal).
 
 ## 🚀 Installation
+
+### From Claude Code Marketplace (Recommended)
+
+Add this repository as a marketplace in Claude Code:
+
+```
+/plugin marketplace add eladcandroid/cc-apps
+```
+
+Then install the cc-apps plugin:
+
+```
+/plugin install cc-apps
+```
+
+### Manual Installation
 
 ```bash
 # Clone the repo
@@ -138,6 +155,7 @@ bun run src/cli.ts browser --url "http://localhost:3000" --gui
 | 🕐 `zmanim` | Jewish halachic times display |
 | 📊 `table` | Tabular data display and selection |
 | 🔍 `json` | JSON tree explorer with expand/collapse |
+| 📈 `chart` | Bar, line, and pie chart visualization |
 | 🌐 `browser` | Terminal web browser (browsh) |
 
 ## 🙏 Credits
