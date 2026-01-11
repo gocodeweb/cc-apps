@@ -17,6 +17,8 @@ Use Bun for all development:
 | `table` | `display`, `select`, `multi-select` | Tabular data viewer |
 | `json` | `explore`, `select` | JSON tree explorer |
 | `kanban` | `display`, `select`, `manage` | Kanban board for tasks |
+| `weather` | `display` | Weather forecast display |
+| `chart` | `display`, `select` | Bar, line, and pie charts |
 | `browser` | `display` | Terminal web browser (browsh) |
 
 ## Structure

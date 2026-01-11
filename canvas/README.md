@@ -16,6 +16,8 @@ Canvas provides spawnable terminal displays with real-time IPC communication. Cl
 | 🕐 `zmanim` | `display` | Jewish halachic times |
 | 📊 `table` | `display`, `select`, `multi-select` | Tabular data with row selection |
 | 🔍 `json` | `explore`, `select` | JSON tree explorer with expand/collapse |
+| 📋 `kanban` | `display`, `select`, `manage` | Kanban board with card management |
+| 🌤️ `weather` | `display` | Weather forecast display |
 | 📈 `chart` | `display`, `select` | Bar, line, and pie charts |
 | 🌐 `browser` | `display` | Terminal web browser (browsh) |
 
@@ -125,6 +127,16 @@ Help me pick a meeting time, show available slots for this week
 Open a browser to localhost:3000
 ```
 
+📋 **Kanban board:**
+```
+Show me a kanban board with some tasks
+```
+
+🐙 **GitHub issues:**
+```
+Show issues from anthropics/claude-code
+```
+
 ### ⌨️ Direct CLI usage
 
 ```bash
@@ -155,8 +167,11 @@ bun run src/cli.ts browser --url "http://localhost:3000" --gui
 | 🕐 `zmanim` | Jewish halachic times display |
 | 📊 `table` | Tabular data display and selection |
 | 🔍 `json` | JSON tree explorer with expand/collapse |
+| 📋 `kanban` | Kanban board with card management |
+| 🌤️ `weather` | Weather forecast display |
 | 📈 `chart` | Bar, line, and pie chart visualization |
 | 🌐 `browser` | Terminal web browser (browsh) |
+| 🐙 `github-issues` | Browse GitHub issues in kanban board |
 
 ## 🙏 Credits
 
