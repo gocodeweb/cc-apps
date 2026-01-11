@@ -29,7 +29,7 @@ cd canvas && bun run src/cli.ts show document --scenario edit
 The system has three layers:
 
 1. **CLI** (`canvas/src/cli.ts`) - Entry point, parses commands, delegates to canvases
-2. **Canvases** (`canvas/src/canvases/`) - React/Ink TUI components (calendar, document, flight, zmanim, table, json, weather, chart, browser)
+2. **Canvases** (`canvas/src/canvases/`) - React/Ink TUI components (calendar, document, flight, zmanim, table, json, weather, chart, kanban, browser)
 3. **IPC** (`canvas/src/ipc/`) - Unix socket communication between Claude and spawned canvases
 
 ### Canvas Types and Scenarios
@@ -46,6 +46,7 @@ Each canvas type supports multiple scenarios (interaction modes):
 | json | `explore`, `select` |
 | weather | `display` |
 | chart | `display`, `select` |
+| kanban | `display`, `select`, `manage` |
 | browser | `display` |
 
 ### Key Flows

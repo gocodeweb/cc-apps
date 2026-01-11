@@ -25,6 +25,10 @@ A TUI toolkit that gives Claude Code its own display. Spawn interactive terminal
 | `zmanim` | `display` | Jewish halachic times |
 | `table` | `display`, `select`, `multi-select` | Tabular data with row selection |
 | `json` | `explore`, `select` | JSON tree explorer with expand/collapse |
+| `weather` | `display` | Weather forecast display |
+| `chart` | `display`, `select` | Bar, line, and pie charts |
+| `kanban` | `display`, `select`, `manage` | Kanban board for tasks |
+| `browser` | `display` | Terminal web browser (browsh) |
 
 ## Requirements
 
@@ -58,13 +62,13 @@ npm install -g @anthropic-ai/claude-code
 Add this repository as a marketplace in Claude Code:
 
 ```
-/plugin marketplace add eladcandroid/cc-apps
+/plugin marketplace add gocodeweb/cc-apps
 ```
 
 Then install the canvas plugin:
 
 ```
-/plugin install canvas@cc-apps
+/plugin install cc-apps@cc-apps
 ```
 
 ## Usage
@@ -101,6 +105,26 @@ Let me explore this JSON: {"users": [{"name": "John", "age": 30}, {"name": "Jane
 **Document editing:**
 ```
 Open a document editor with a markdown template
+```
+
+**Weather:**
+```
+Show me the weather for New York
+```
+
+**Chart:**
+```
+Show me a bar chart of monthly sales data
+```
+
+**Kanban:**
+```
+Create a kanban board with my project tasks
+```
+
+**GitHub Issues:**
+```
+Show me issues from anthropics/claude-code
 ```
 
 ## Credits
