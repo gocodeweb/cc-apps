@@ -176,6 +176,17 @@ program
   });
 
 program
+  .command("github-issues")
+  .description("Browse GitHub issues in a kanban board")
+  .option("--repo <repo>", "GitHub repository (owner/repo)", "anthropics/claude-code")
+  .option("--limit <n>", "Number of issues to fetch", "30")
+  .action(async (options) => {
+    const { $ } = await import("bun");
+    const scriptPath = new URL("./commands/github-issues.ts", import.meta.url).pathname;
+    await $`bun run ${scriptPath} --repo=${options.repo} --limit=${options.limit}`;
+  });
+
+program
   .command("content <id>")
   .description("Get the current content from a running document canvas")
   .action(async (id: string) => {

@@ -18,6 +18,7 @@ export interface IPCServerHandle {
   isConnected: boolean;
   sendReady: () => void;
   sendSelected: (data: unknown) => void;
+  sendPreview: (data: unknown) => void;
   sendCancelled: (reason?: string) => void;
   sendError: (message: string) => void;
 }
@@ -115,6 +116,10 @@ export function useIPCServer(options: UseIPCServerOptions): IPCServerHandle {
     serverRef.current?.broadcast({ type: "selected", data });
   }, []);
 
+  const sendPreview = useCallback((data: unknown) => {
+    serverRef.current?.broadcast({ type: "preview", data });
+  }, []);
+
   const sendCancelled = useCallback((reason?: string) => {
     serverRef.current?.broadcast({ type: "cancelled", reason });
   }, []);
@@ -127,6 +132,7 @@ export function useIPCServer(options: UseIPCServerOptions): IPCServerHandle {
     isConnected,
     sendReady,
     sendSelected,
+    sendPreview,
     sendCancelled,
     sendError,
   };

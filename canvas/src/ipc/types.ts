@@ -12,6 +12,7 @@ export type ControllerMessage =
 export type CanvasMessage =
   | { type: "ready"; scenario: string }
   | { type: "selected"; data: unknown }
+  | { type: "preview"; data: unknown }
   | { type: "cancelled"; reason?: string }
   | { type: "error"; message: string }
   | { type: "pong" }

@@ -16,6 +16,7 @@ Use Bun for all development:
 | `zmanim` | `display` | Jewish halachic times |
 | `table` | `display`, `select`, `multi-select` | Tabular data viewer |
 | `json` | `explore`, `select` | JSON tree explorer |
+| `kanban` | `display`, `select`, `manage` | Kanban board for tasks |
 | `browser` | `display` | Terminal web browser (browsh) |
 
 ## Structure

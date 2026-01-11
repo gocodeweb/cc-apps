@@ -23,6 +23,7 @@ Canvas provides interactive terminal displays (TUIs) that Claude can spawn and c
 | `zmanim` | Display Jewish halachic times | `display` |
 | `table` | Display and select from tabular data | `display`, `select`, `multi-select` |
 | `json` | JSON/YAML tree explorer | `explore`, `select` |
+| `kanban` | Task board with columns | `display`, `select`, `manage` |
 | `browser` | Terminal web browser (browsh) | `display` |
 
 ## Quick Start
@@ -49,7 +50,7 @@ bun run src/cli.ts spawn [kind] --scenario [name] --config '[json]'
 ```
 
 **Parameters:**
-- `kind`: Canvas type (calendar, document, flight, table, json, browser)
+- `kind`: Canvas type (calendar, document, flight, table, json, kanban, browser)
 - `--scenario`: Interaction mode (e.g., display, meeting-picker, edit)
 - `--config`: JSON configuration for the canvas
 - `--id`: Optional canvas instance ID for IPC
@@ -140,4 +141,5 @@ After editing, reload with: `tmux source-file ~/.tmux.conf`
 | `zmanim` | Jewish halachic times display |
 | `table` | Tabular data display and selection |
 | `json` | JSON tree explorer with expand/collapse |
+| `kanban` | Task board with card management |
 | `browser` | Terminal web browser with full JS support |

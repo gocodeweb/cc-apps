@@ -15,6 +15,9 @@ import { jsonSelectScenario } from "./json/select";
 import { weatherDisplayScenario } from "./weather/display";
 import { chartDisplayScenario } from "./chart/display";
 import { chartSelectScenario } from "./chart/select";
+import { kanbanDisplayScenario } from "./kanban/display";
+import { kanbanSelectScenario } from "./kanban/select";
+import { kanbanManageScenario } from "./kanban/manage";
 
 // Registry of all scenarios keyed by "canvasKind:scenarioName"
 const registry = new Map<string, ScenarioDefinition>();
@@ -46,6 +49,11 @@ registry.set("weather:display", weatherDisplayScenario);
 // Register chart scenarios
 registry.set("chart:display", chartDisplayScenario);
 registry.set("chart:select", chartSelectScenario);
+
+// Register kanban scenarios
+registry.set("kanban:display", kanbanDisplayScenario);
+registry.set("kanban:select", kanbanSelectScenario);
+registry.set("kanban:manage", kanbanManageScenario);
 
 export function getScenario(
   canvasKind: string,

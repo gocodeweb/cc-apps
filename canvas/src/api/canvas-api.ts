@@ -22,6 +22,7 @@ export interface CanvasResult<T = unknown> {
 export interface SpawnOptions {
   timeout?: number; // ms, default 5 minutes
   onReady?: () => void;
+  onPreview?: (data: unknown) => Promise<void> | void; // Called when Space is pressed (for preview events)
 }
 
 /**
@@ -33,7 +34,7 @@ export async function spawnCanvasWithIPC<TConfig, TResult>(
   config: TConfig,
   options: SpawnOptions = {}
 ): Promise<CanvasResult<TResult>> {
-  const { timeout = 300000, onReady } = options;
+  const { timeout = 300000, onReady, onPreview } = options;
   const id = `${kind}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const socketPath = getSocketPath(id);
 
@@ -89,6 +90,13 @@ export async function spawnCanvasWithIPC<TConfig, TResult>(
           switch (canvasMsg.type) {
             case "ready":
               onReady?.();
+              break;
+
+            case "preview":
+              // Preview event - call callback but don't resolve (canvas stays open)
+              if (onPreview) {
+                onPreview(canvasMsg.data);
+              }
               break;
 
             case "selected":
