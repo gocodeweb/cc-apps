@@ -13,7 +13,7 @@ Interactive terminal TUI components for Claude Code - calendars, documents, tabl
 
 A TUI toolkit that gives Claude Code its own display. Spawn interactive terminal interfaces in tmux split panes and receive user selections back into the conversation.
 
-![Claude Canvas Screenshot](media/screenshot.gif)
+![Claude Canvas Screenshot](media/weather.gif)
 
 ## Canvas Types
 
@@ -101,6 +101,8 @@ Show me a table with some sample users and let me pick one
 ```
 Let me explore this JSON: {"users": [{"name": "John", "age": 30}, {"name": "Jane", "age": 25}]}
 ```
+
+![JSON Explorer](media/json.gif)
 
 **Document editing:**
 ```
